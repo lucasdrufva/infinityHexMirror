@@ -25,7 +25,6 @@ pico_sdk_init()
 
 add_executable(mirror mirror.c )
 pico_generate_pio_header(mirror ${CMAKE_CURRENT_LIST_DIR}/ws2812.pio)
-pico_generate_pio_header(mirror ${CMAKE_CURRENT_LIST_DIR}/pwm.pio)
 
 pico_set_program_name(mirror "mirror")
 pico_set_program_version(mirror "0.1")
@@ -34,11 +33,9 @@ pico_enable_stdio_uart(mirror 0)
 pico_enable_stdio_usb(mirror 1)
 
 # Add the standard library to the build
-target_link_libraries(mirror pico_stdlib)
-
-target_link_libraries(mirror
-        hardware_pio
-        )
+target_link_libraries(mirror PRIVATE pico_stdlib hardware_pwm pico_servo hardware_pio)
 
 pico_add_extra_outputs(mirror)
+
+add_subdirectory(servo)
 
